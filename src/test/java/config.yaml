@@ -1,4 +1,10 @@
---- 
-User: 
-  password: PASSWORD
-  username: USERNAME
+---
+production:
+ baseUrl: 'https://api.zonky.cz'
+ username: 'USERNAME'
+ password: 'PASSWORD'
+
+staging:
+ baseUrl: ''
+ username: ''
+ password: ''
