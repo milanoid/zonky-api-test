@@ -19,7 +19,7 @@ API uses _oauth2_ authentication. In order to make a request client must obtain 
 
 ### Credentials
 
-To authenticate a valid registered Zonky user credentials must be provided. Put them into `config.yaml` file.
+To authenticate a valid registered Zonky user credentials must be provided. Put them into `config.yaml` file. Provide environment the test should run against e.g. for production pass `-Denv=production`
 
 ### Java
 ```
