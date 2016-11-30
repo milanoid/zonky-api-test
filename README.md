@@ -8,7 +8,7 @@ Smoke API test of [Zonky Marketplace](https://app.zonky.cz/#/marketplace/).
 
 ## API Smoke test
 
-The test hit the Marketplace endoint _/loans/marketplace_ and asserts:
+The test hits the Marketplace endoint _/loans/marketplace_ and asserts:
 - HTTP status is 200 OK
 - response data is a _json_
 - the list of loans has non-zero lenght
