@@ -53,13 +53,12 @@ public class MarketPlaceTest {
 
         String requestBody = String.format("username=%s&password=%s&grant_type=password&scope=SCOPE_APP_WEB", username, password);
 
-        // Get token first
         accessToken =
                 given(requestSpecification).
                         auth().preemptive().basic("web", "web").
                         body(requestBody).
                 when().
-                        post("https://api.zonky.cz/oauth/token").
+                        post("/oauth/token").
                 then().
                         extract().path("access_token");
     }
