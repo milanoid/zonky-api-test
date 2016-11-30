@@ -23,8 +23,7 @@ public class MarketPlaceTest {
     static String accessToken;
 
     @BeforeClass
-    public static void onceExecutedBeforeAll() {
-        System.out.println("@BeforeClass: onceExecutedBeforeAll");
+    public static void setUp() {
         RestAssured.baseURI = "https://api.zonky.cz";
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured.proxy("localhost", 8888);
