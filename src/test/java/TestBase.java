@@ -20,21 +20,21 @@ public class TestBase {
 
     public TestBase()
     {
-        super();
+        new TestBase("production");
     }
 
     public TestBase(String environment)
     {
         try {
-            InputStream ios = new FileInputStream(new File("src/test/java/config.yaml"));
+            InputStream ios = new FileInputStream(new File("config.yaml"));
             Yaml yaml = new Yaml();
             Map config = (Map) yaml.load(ios);
             Map envConfig = (Map) config.get(environment);
             baseUrl = envConfig.get("baseUrl").toString();
             username = URLEncoder.encode(envConfig.get("username").toString(), "UTF-8");
             password = URLEncoder.encode(envConfig.get("password").toString(), "UTF-8");
-            accessToken = TestBase.getApiToken();
-            requestSpecification = TestBase.prepareRequest();
+            accessToken = this.getApiToken();
+            requestSpecification = this.prepareRequest();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -42,7 +42,7 @@ public class TestBase {
     }
 
 
-    public static RequestSpecification prepareRequest()
+    private RequestSpecification prepareRequest()
     {
         requestSpecification = new RequestSpecBuilder()
                 .setBaseUri(baseUrl)
@@ -53,10 +53,10 @@ public class TestBase {
         return requestSpecification;
     }
 
-    public static String getApiToken()
+    private String getApiToken()
     {
         String requestBody = String.format("username=%s&password=%s&grant_type=password&scope=SCOPE_APP_WEB", username, password);
-        RequestSpecification requestSpecification = TestBase.prepareRequest();
+        RequestSpecification requestSpecification = this.prepareRequest();
 
         accessToken =
                 given(requestSpecification).
