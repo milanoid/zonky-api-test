@@ -1,3 +1,4 @@
+import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,6 +28,7 @@ public class MarketPlaceTest extends TestBase {
                 get("/loans/marketplace").
         then().
                 statusCode(200).
+                body(JsonSchemaValidator.matchesJsonSchemaInClasspath("marketplace.json")).
                 extract().response();
 
         ArrayList loanOffers = marketPlaceResponse.jsonPath().get();
