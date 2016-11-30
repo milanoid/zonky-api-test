@@ -1,9 +1,9 @@
 # zonky-api-test
-Smoke API test of Zonky Marketplace. 
+Smoke API test of [Zonky Marketplace](https://app.zonky.cz/#/marketplace/). 
 
 
 ## Zonky Marketplace
- - Zonky Marketplace displays available loans. A Zonky investor can pick a loan and finance it.
+ - [Zonky Marketplace](https://app.zonky.cz/#/marketplace/) displays available loans. A Zonky investor can pick a loan and finance it.
  - Zonky REST API documentation at [apiary](http://docs.zonky.apiary.io/#)
 
 ## API Smoke test
