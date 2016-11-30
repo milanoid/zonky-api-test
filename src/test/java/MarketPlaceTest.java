@@ -65,7 +65,7 @@ public class MarketPlaceTest {
     }
 
     @Test
-    public void MarketPlaceOffersLoans() {
+    public void marketPlaceOffersLoans() {
 
         Response marketPlaceResponse =
         given(requestSpecification).
