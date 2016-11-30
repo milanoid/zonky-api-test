@@ -1,6 +1,7 @@
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
@@ -17,15 +18,16 @@ import static org.hamcrest.Matchers.*;
 
 public class MarketPlaceTest {
 
-    @Test
-    public void HelloWorldTest() {
+    static String username;
+    static String password;
+    static String accessToken;
 
+    @BeforeClass
+    public static void onceExecutedBeforeAll() {
+        System.out.println("@BeforeClass: onceExecutedBeforeAll");
         RestAssured.baseURI = "https://api.zonky.cz";
         RestAssured.useRelaxedHTTPSValidation();
         RestAssured.proxy("localhost", 8888);
-
-        String username = "";
-        String password = "";
 
         try {
             InputStream ios = new FileInputStream(new File("src/test/java/config.yaml"));
@@ -45,20 +47,22 @@ public class MarketPlaceTest {
         String requestBody = String.format("username=%s&password=%s&grant_type=password&scope=SCOPE_APP_WEB", username, password);
 
         // Get token first
-        String accessToken =
-        given().
-                contentType("application/x-www-form-urlencoded").
-                header("User-Agent", "Foo/1.0 (https://github.com/john.doe/foo)").
-                auth().preemptive().basic("web", "web").
-                body(requestBody).
-        when().
-                post("https://api.zonky.cz/oauth/token").
-        then().
-                statusCode(200).
-                extract().path("access_token");
+        accessToken =
+                given().
+                        contentType("application/x-www-form-urlencoded").
+                        header("User-Agent", "Foo/1.0 (https://github.com/john.doe/foo)").
+                        auth().preemptive().basic("web", "web").
+                        body(requestBody).
+                        when().
+                        post("https://api.zonky.cz/oauth/token").
+                        then().
+                        statusCode(200).
+                        extract().path("access_token");
+    }
 
+    @Test
+    public void MarketPlaceOffersLoans() {
 
-        // query marketplace using the token
         Response marketPlaceResponse =
         given().
                 auth().oauth2(accessToken).
