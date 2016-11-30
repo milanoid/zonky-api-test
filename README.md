@@ -10,14 +10,13 @@ Smoke API test of [Zonky Marketplace](https://app.zonky.cz/#/marketplace/).
 
 The test hits the Marketplace endpoint _/loans/marketplace_ and asserts:
 - HTTP status is 200 OK
-- response data is a _json_
-- the list of loans has non-zero lenght
+- json response confirms to json schema `marketplace.json`
 
 API uses _oauth2_ authentication. In order to make a request client must obtain API token first.
 
 ## Technicalities
 
-### Credentials
+### Credentials and Environments
 
 To authenticate a valid registered Zonky user credentials must be provided. Put them into `config.yaml` file. Provide environment the test should run against e.g. for production pass `-Denv=production`
 

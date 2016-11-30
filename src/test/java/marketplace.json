@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "name": {
+        "type": "string"
+      },
+      "story": {
+        "type": "string"
+      },
+      "purpose": {
+        "type": "string"
+      },
+      "photos": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "url"
+          ]
+        }
+      },
+      "userId": {
+        "type": "integer"
+      },
+      "nickName": {
+        "type": "string"
+      },
+      "termInMonths": {
+        "type": "integer"
+      },
+      "interestRate": {
+        "type": "number"
+      },
+      "rating": {
+        "type": "string"
+      },
+      "topped": {
+        "type": ["null", "boolean"]
+      },
+      "amount": {
+        "type": "number"
+      },
+      "remainingInvestment": {
+        "type": "number"
+      },
+      "investmentRate": {
+        "type": "number"
+      },
+      "covered": {
+        "type": "boolean"
+      },
+      "datePublished": {
+        "type": "string"
+      },
+      "published": {
+        "type": "boolean"
+      },
+      "deadline": {
+        "type": "string"
+      },
+      "investmentsCount": {
+        "type": "integer"
+      },
+      "questionsCount": {
+        "type": "integer"
+      },
+      "region": {
+        "type": "string"
+      },
+      "mainIncomeType": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "name",
+      "story",
+      "purpose",
+      "photos",
+      "userId",
+      "nickName",
+      "termInMonths",
+      "interestRate",
+      "rating",
+      "topped",
+      "amount",
+      "remainingInvestment",
+      "investmentRate",
+      "covered",
+      "datePublished",
+      "published",
+      "deadline",
+      "investmentsCount",
+      "questionsCount",
+      "region",
+      "mainIncomeType"
+    ]
+  }
+}
