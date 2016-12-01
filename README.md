@@ -14,20 +14,22 @@ The test hits the Marketplace endpoint _/loans/marketplace_ and asserts:
 
 API uses _oauth2_ authentication. In order to make a request client must obtain API token first.
 
-## Technicalities
+## Requirements
 
-### Credentials and Environments
+- Credentials and Environments
 
-To authenticate a valid registered Zonky user credentials must be provided. Put them into `config.yaml` file. Provide environment the test should run against e.g. for production pass `-Denv=production`
+To authenticate a valid registered Zonky user credentials must be provided. Put them into `config.yaml` file. Provide environment the test should run against e.g. for production pass `-Denv=production`.
 
-### Java
+File `marketplace.json` with json schema must be in classpath. You may want to pass `-cp C:\path\to\directory\with\marketplace.json`.
+
+- Java
 ```
 java -version
 java version "1.8.0_112"
 Java(TM) SE Runtime Environment (build 1.8.0_112-b15)
 Java HotSpot(TM) 64-Bit Server VM (build 25.112-b15, mixed mode)
 ```
-### Maven
+- Maven
 
 ```
 mvn --version
