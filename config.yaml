@@ -3,8 +3,22 @@ production:
  baseUrl: 'https://api.zonky.cz'
  username: 'USERNAME'
  password: 'PASSWORD'
+ proxyEnabled: True
+ proxyHost: '127.0.0.1'
+ proxyPort: 8888
 
 staging:
  baseUrl: ''
- username: ''
- password: ''
+ username: 'USERNAME'
+ password: 'PASSWORD'
+ proxyEnabled: True
+ proxyHost: '127.0.0.1'
+ proxyPort: 8888
+
+test:
+ baseUrl: 'https://api-test.zonkej.cz'
+ username: 'USERNAME'
+ password: 'PASSWORD'
+ proxyEnabled: True
+ proxyHost: '127.0.0.1'
+ proxyPort: 8888
