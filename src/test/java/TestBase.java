@@ -57,7 +57,8 @@ public class TestBase {
                 .setBaseUri(baseUrl)
                 .setRelaxedHTTPSValidation()
                 .addHeader("User-Agent", "Foo/1.0 (https://github.com/milanoid/zonky-api-test)")
-                .setContentType("application/x-www-form-urlencoded");
+                .setContentType("application/x-www-form-urlencoded")
+                .addHeader("Origin", baseUrl);
 
         if (proxyEnabled) builder.setProxy(proxyHost, proxyPort);
 
