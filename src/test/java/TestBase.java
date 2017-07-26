@@ -92,7 +92,7 @@ public class TestBase {
                         extract().path("access_token");
 
         if (accessToken == null)
-            throw new Exception(String.format("Could not get API token for \n username:%s \n password:%s\n", username, password));
+            throw new Exception(String.format("Could not get API token for \n username:%s", username));
 
         return accessToken;
     }

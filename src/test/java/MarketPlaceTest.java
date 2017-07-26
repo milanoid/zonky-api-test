@@ -1,6 +1,4 @@
-import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.Response;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;

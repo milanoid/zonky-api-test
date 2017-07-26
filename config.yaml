@@ -1,6 +1,5 @@
 ---
 # USERNAME and PASSWORD can be passed in as environment parameters,
-# e.g. BASEURL=https://api.zonky.cz
 # e.g. USERNAME=my@user.cz
 # e.g. PASSWORD=my@user.cz
 
