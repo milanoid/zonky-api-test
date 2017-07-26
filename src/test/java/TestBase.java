@@ -29,13 +29,10 @@ public class TestBase {
             Map config = (Map) yaml.load(ios);
             Map envConfig = (Map) config.get(environment);
 
-            // environment variables have priority over config.yaml
+            baseUrl = (String) envConfig.get("baseUrl");
+            origin = (String) envConfig.get("origin");
 
-            if (System.getenv("BASEURL") == null) {
-                baseUrl = (String) envConfig.get("baseUrl");
-            } else {
-                baseUrl = System.getenv("BASEURL");
-            }
+            // environment variables USERNAME and PASSWORD have priority over config.yaml values
 
             if (System.getenv("USERNAME") == null) {
                 username = (String) envConfig.get("username");
@@ -48,7 +45,7 @@ public class TestBase {
             } else {
                 password = System.getenv("PASSWORD");
             }
-            origin = (String) envConfig.get("origin");
+
 
 
         } catch (Exception e) {

@@ -5,7 +5,7 @@
 # e.g. PASSWORD=my@user.cz
 
 production:
- baseApiUrl: 'https://api.zonky.cz'
+ baseUrl: 'https://api.zonky.cz'
  origin: 'https://app.zonky.cz'
  username: 'USERNAME'
  password: 'PASSWORD'
