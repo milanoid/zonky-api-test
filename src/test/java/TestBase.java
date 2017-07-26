@@ -2,7 +2,6 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import org.yaml.snakeyaml.Yaml;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -15,14 +14,12 @@ public class TestBase {
     static String baseUrl;
     static String username;
     static String password;
+    static String origin;
     static String accessToken;
-    static Boolean proxyEnabled;
-    static String proxyHost;
-    static Integer proxyPort;
     static RequestSpecification requestSpecification;
 
     public TestBase() {
-        new TestBase("test");
+        new TestBase(System.getenv("ENV"));
     }
 
     public TestBase(String environment) {
@@ -31,12 +28,26 @@ public class TestBase {
             Yaml yaml = new Yaml();
             Map config = (Map) yaml.load(ios);
             Map envConfig = (Map) config.get(environment);
+
             baseUrl = (String) envConfig.get("baseUrl");
-            username = (String) envConfig.get("username");
-            password = (String) envConfig.get("password");
-            proxyEnabled = (Boolean) envConfig.get("proxyEnabled");
-            proxyHost = (String) envConfig.get("proxyHost");
-            proxyPort = (Integer) envConfig.get("proxyPort");
+            origin = (String) envConfig.get("origin");
+
+            // environment variables USERNAME and PASSWORD have priority over config.yaml values
+
+            if (System.getenv("USERNAME") == null) {
+                username = (String) envConfig.get("username");
+            } else {
+                username = System.getenv("USERNAME");
+            }
+
+            if (System.getenv("PASSWORD") == null) {
+                password = (String) envConfig.get("password");
+            } else {
+                password = System.getenv("PASSWORD");
+            }
+
+
+
         } catch (Exception e) {
             System.out.print("Could not read some values from config.yaml.");
         }
@@ -58,10 +69,10 @@ public class TestBase {
                 .setRelaxedHTTPSValidation()
                 .addHeader("User-Agent", "Foo/1.0 (https://github.com/milanoid/zonky-api-test)")
                 .setContentType("application/x-www-form-urlencoded")
-                .addHeader("Origin", baseUrl);
+                .addHeader("Origin", origin);
 
-        if (proxyEnabled) builder.setProxy(proxyHost, proxyPort);
-
+        // this might be handy when debugging
+//        builder.setProxy("127.0.0.1", 8888);
         return builder.build();
     }
 
@@ -81,7 +92,7 @@ public class TestBase {
                         extract().path("access_token");
 
         if (accessToken == null)
-            throw new Exception(String.format("Could not get API token for \n username:%s \n password:%s\n", username, password));
+            throw new Exception(String.format("Could not get API token for \n username:%s\n", username));
 
         return accessToken;
     }
