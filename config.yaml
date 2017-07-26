@@ -1,24 +1,23 @@
 ---
-production:
- baseUrl: 'https://api.zonky.cz'
- username: 'USERNAME'
- password: 'PASSWORD'
- proxyEnabled: True
- proxyHost: '127.0.0.1'
- proxyPort: 8888
+# USERNAME and PASSWORD can be passed in as environment parameters,
+# e.g. BASEURL=https://api.zonky.cz
+# e.g. USERNAME=my@user.cz
+# e.g. PASSWORD=my@user.cz
 
-staging:
- baseUrl: ''
+production:
+ baseApiUrl: 'https://api.zonky.cz'
+ origin: 'https://app.zonky.cz'
  username: 'USERNAME'
  password: 'PASSWORD'
- proxyEnabled: True
- proxyHost: '127.0.0.1'
- proxyPort: 8888
+
+preprod:
+ baseUrl: 'https://api.zonkej.cz'
+ origin: 'https://app.zonkej.cz'
+ username: 'USERNAME'
+ password: 'PASSWORD'
 
 test:
  baseUrl: 'https://api-test.zonkej.cz'
+ origin: 'https://test.zonkej.cz'
  username: 'USERNAME'
  password: 'PASSWORD'
- proxyEnabled: True
- proxyHost: '127.0.0.1'
- proxyPort: 8888

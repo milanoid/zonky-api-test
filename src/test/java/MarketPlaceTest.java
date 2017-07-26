@@ -11,13 +11,6 @@ import static org.hamcrest.Matchers.greaterThan;
 
 public class MarketPlaceTest extends TestBase {
 
-    static TestBase config;
-
-    @BeforeClass
-    public static void setUp() {
-        config = new TestBase(System.getProperty("env"));
-    }
-
     @Test
     public void marketPlaceOffersLoans() {
 
@@ -28,7 +21,6 @@ public class MarketPlaceTest extends TestBase {
                 get("/loans/marketplace").
         then().
                 statusCode(200).
-                body(JsonSchemaValidator.matchesJsonSchemaInClasspath("marketplace.json")).
                 extract().response();
 
         ArrayList loanOffers = marketPlaceResponse.jsonPath().get();
