@@ -20,3 +20,9 @@ test:
  origin: 'https://test.zonkej.cz'
  username: 'USERNAME'
  password: 'PASSWORD'
+
+eckee:
+  baseUrl: 'http://api.ackee.zonkej.cz'
+  origin: 'https://app.ackee.zonkej.cz'
+  username: 'mobile.user2000@zonkej.cz'
+  password: 'Zebra2014'

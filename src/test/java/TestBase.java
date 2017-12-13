@@ -17,6 +17,7 @@ public class TestBase {
     static String origin;
     static String accessToken;
     static RequestSpecification requestSpecification;
+    static RequestSpecification withoutOauth2spec;
 
     public TestBase() {
         new TestBase(System.getenv("ENV"));
@@ -31,22 +32,8 @@ public class TestBase {
 
             baseUrl = (String) envConfig.get("baseUrl");
             origin = (String) envConfig.get("origin");
-
-            // environment variables USERNAME and PASSWORD have priority over config.yaml values
-
-            if (System.getenv("USERNAME") == null) {
-                username = (String) envConfig.get("username");
-            } else {
-                username = System.getenv("USERNAME");
-            }
-
-            if (System.getenv("PASSWORD") == null) {
-                password = (String) envConfig.get("password");
-            } else {
-                password = System.getenv("PASSWORD");
-            }
-
-
+            username = (String) envConfig.get("username");
+            password = (String) envConfig.get("password");
 
         } catch (Exception e) {
             System.out.print("Could not read some values from config.yaml.");
@@ -59,11 +46,11 @@ public class TestBase {
         }
 
 
-        requestSpecification = this.prepareRequest();
+        requestSpecification = this.prepareOauth2Request();
     }
 
 
-    private RequestSpecification prepareRequest() {
+    private RequestSpecification prepareOauth2Request() {
         RequestSpecBuilder builder = new RequestSpecBuilder()
                 .setBaseUri(baseUrl)
                 .setRelaxedHTTPSValidation()
@@ -72,16 +59,17 @@ public class TestBase {
                 .addHeader("Origin", origin);
 
         // this might be handy when debugging
-//        builder.setProxy("127.0.0.1", 8888);
+        builder.setProxy("127.0.0.1", 8888);
         return builder.build();
     }
 
     private String getApiToken() throws Exception {
-        RequestSpecification requestSpecification = this.prepareRequest();
+        RequestSpecification requestSpecification = this.prepareOauth2Request();
 
         accessToken =
                 given(requestSpecification).
-                        auth().preemptive().basic("web", "web").
+//                        auth().preemptive().basic("web", "web").
+                        auth().preemptive().basic("mobileapp", "mobileapp").
                         formParam("username", username).
                         formParam("password", password).
                         formParam("grant_type", "password").
