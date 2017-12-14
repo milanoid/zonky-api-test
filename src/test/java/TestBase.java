@@ -1,4 +1,5 @@
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.yaml.snakeyaml.Yaml;
 
@@ -16,8 +17,7 @@ public class TestBase {
     static String password;
     static String origin;
     static String accessToken;
-    static RequestSpecification requestSpecification;
-    static RequestSpecification withoutOauth2spec;
+    static RequestSpecification requestSpecification, createUserRequest;
 
     public TestBase() {
         new TestBase(System.getenv("ENV"));
@@ -39,23 +39,24 @@ public class TestBase {
             System.out.print("Could not read some values from config.yaml.");
         }
 
-        try {
-            accessToken = this.getApiToken();
-        } catch (Exception e) {
-            System.out.print(e);
-        }
+//        try {
+//            accessToken = this.getApiToken();
+//        } catch (Exception e) {
+//            System.out.print(e);
+//        }
 
 
         requestSpecification = this.prepareOauth2Request();
+        createUserRequest = this.prepareCreateUserRequest();
     }
 
 
-    private RequestSpecification prepareOauth2Request() {
+    private static RequestSpecification prepareOauth2Request() {
         RequestSpecBuilder builder = new RequestSpecBuilder()
                 .setBaseUri(baseUrl)
                 .setRelaxedHTTPSValidation()
                 .addHeader("User-Agent", "Foo/1.0 (https://github.com/milanoid/zonky-api-test)")
-                .setContentType("application/x-www-form-urlencoded")
+                .setContentType(ContentType.JSON)
                 .addHeader("Origin", origin);
 
         // this might be handy when debugging
@@ -63,12 +64,23 @@ public class TestBase {
         return builder.build();
     }
 
-    private String getApiToken() throws Exception {
-        RequestSpecification requestSpecification = this.prepareOauth2Request();
+    private RequestSpecification prepareCreateUserRequest() {
+        RequestSpecBuilder builder = new RequestSpecBuilder()
+                .setBaseUri(baseUrl)
+                .setRelaxedHTTPSValidation()
+                .setContentType(ContentType.JSON)
+                .setAccept(ContentType.JSON)
+                .setProxy("127.0.0.1", 8888);
+
+        return builder.build();
+
+    }
+
+    public static String getApiToken(String username, String password) {
+        RequestSpecification requestSpecification = prepareOauth2Request();
 
         accessToken =
-                given(requestSpecification).
-//                        auth().preemptive().basic("web", "web").
+                given(requestSpecification.contentType("application/x-www-form-urlencoded")).
                         auth().preemptive().basic("mobileapp", "mobileapp").
                         formParam("username", username).
                         formParam("password", password).
@@ -78,10 +90,6 @@ public class TestBase {
                         post("/oauth/token").
                         then().
                         extract().path("access_token");
-
-        if (accessToken == null)
-            throw new Exception(String.format("Could not get API token for \n username:%s\n", username));
-
         return accessToken;
     }
 }

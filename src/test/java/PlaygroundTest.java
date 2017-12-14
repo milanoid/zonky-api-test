@@ -1,33 +1,116 @@
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import groovy.json.JsonBuilder;
-import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
+import org.junit.Before;
 import org.junit.Test;
-
-import javax.json.Json;
+import requests.Payloads;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.is;
+import static requests.Payloads.createUserPayload;
 
 
 public class PlaygroundTest extends TestBase {
 
-//    @Test
-//    public void dummyTest() {
-//
-//        given(requestSpecification).auth().oauth2(accessToken).when().get("/mobile/v1/application/183500").then().statusCode(200);
-//    }
+    String testUser;
+    String password = "Zebra2014";
+    String accessToken;
+    int loanId;
+
+    @Before
+    public void createTestUser() {
+
+        testUser =
+                given(TestBase.createUserRequest)
+                        .when()
+                        .body(createUserPayload())
+                        .post("/mobile/v1/users")
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .extract().path("email");
+
+        accessToken = TestBase.getApiToken(testUser, password);
+    }
 
     @Test
     public void onboardingOverMobileApi() {
 
-        given(requestSpecification.contentType(ContentType.JSON))
-                .auth().oauth2(accessToken)
-        .when()
-                .body(Json.createObjectBuilder().build())
-                .post("/mobile/v1/application")
-        .then()
-                .statusCode(201);
+        // create application
+        loanId =
+                given(TestBase.requestSpecification)
+                        .auth().oauth2(accessToken)
+                        .when()
+                        .body(Payloads.createApplication())
+                        .post("/mobile/v1/application")
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .extract()
+                        .path("id");
 
+        // update application
+        given(TestBase.requestSpecification)
+                .auth().oauth2(accessToken)
+                .when()
+                .body(Payloads.updateApplication())
+                .patch(String.format("/mobile/v1/application/%s", Integer.toString(loanId)))
+                .then()
+                .log()
+                .body()
+                .statusCode(200);
+
+        // finish application
+        given(TestBase.requestSpecification)
+                .auth().oauth2(accessToken)
+                .when()
+                .post(String.format("/mobile/v1/application/%s/finish", Integer.toString(loanId)))
+                .then()
+                .log().ifError()
+                .assertThat().statusCode(400).and().body("error", is("AUTHORIZATION_SMS_REQUIRED"));
+
+        // finish application - sign with SMS code
+        given(TestBase.requestSpecification)
+                .auth().oauth2(accessToken)
+                .header("X-Authorization-Code", "000123")
+                .when()
+                .post(String.format("/mobile/v1/application/%s/finish", Integer.toString(loanId)))
+                .then()
+                .log().ifError()
+                .assertThat().statusCode(204);
+
+        // get preliminary offer
+        boolean isScored =
+                given(TestBase.requestSpecification)
+                        .auth().oauth2(accessToken)
+                        .when()
+                        .post(String.format("/mobile/v1/loans/%s/preliminary-offer", loanId))
+                        .then()
+                        .assertThat().statusCode(200).and().extract().path("scored");
+
+        // wait for online scoring
+        int maxTry = 120;
+
+        while (!isScored && maxTry > 0) {
+            isScored = given(TestBase.requestSpecification)
+                    .auth().oauth2(accessToken)
+                    .when()
+                    .post(String.format("/mobile/v1/loans/%s/preliminary-offer", loanId))
+                    .then()
+                    .assertThat().statusCode(200).and().extract().path("scored");
+            maxTry -= 1;
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // accept preliminary offer
+        given(TestBase.requestSpecification)
+                .auth().oauth2(accessToken)
+                .when()
+                .body("{\"text\" : \"Gimme money!\"}")
+                .put(String.format("/mobile/v1/loans/%s/preliminary-offer/accept", loanId))
+                .then()
+                .assertThat().statusCode(200);
     }
+
 }
