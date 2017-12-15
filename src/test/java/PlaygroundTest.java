@@ -116,6 +116,10 @@ public class PlaygroundTest extends TestBase {
         // schvaleni v Adminu.. (pozor, test poptavka nejde schvalit)
 
 
+        // accept final offer
+        // todo: /mobile/v1/loans/{loanId}/offer/select
+
+
         // sign final offer
         given(TestBase.requestSpecification)
                 .auth().oauth2(accessToken)
