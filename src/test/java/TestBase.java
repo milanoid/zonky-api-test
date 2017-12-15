@@ -1,5 +1,7 @@
+import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.yaml.snakeyaml.Yaml;
 
@@ -7,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
 
@@ -18,6 +21,7 @@ public class TestBase {
     static String origin;
     static String accessToken;
     static RequestSpecification requestSpecification, createUserRequest;
+    private static Logger LOGGER = Logger.getLogger(TestBase.class.getName());
 
     public TestBase() {
         new TestBase(System.getenv("ENV"));
@@ -91,5 +95,12 @@ public class TestBase {
                         then().
                         extract().path("access_token");
         return accessToken;
+    }
+
+    public static String getSMSverificationCode(String userEmail) {
+        String url = String.format("%s/test-helper/sms/search/findByEmailSortedFromNewest?email=%s", baseUrl, userEmail);
+        LOGGER.info(String.format("Getting SMS code from: %s", url));
+        Response response = RestAssured.get(url);
+        return response.jsonPath().get("_embedded.sms.code[0]");
     }
 }

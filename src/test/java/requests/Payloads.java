@@ -1,7 +1,6 @@
 package requests;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -16,7 +15,8 @@ public class Payloads {
         int randomNumber = r.nextInt(high-low) + low;
 
         HashMap<String, String> createUserPayload = new HashMap<String, String>();
-        createUserPayload.put("email", String.format("milan.vojnovic+test%s@zonky.cz", randomNumber));
+//        createUserPayload.put("email", String.format("milan.vojnovic+test%s@zonky.cz", randomNumber));
+        createUserPayload.put("email", String.format("milan.vojnovic@zonky.cz", randomNumber));
         createUserPayload.put("firstName", "Milan");
         createUserPayload.put("lastName", "Vojnovič");
         createUserPayload.put("password", "Zebra2014");
@@ -43,15 +43,21 @@ public class Payloads {
     {
         HashMap<String, Object> updateApplicationPayload = new HashMap<String, Object>();
         HashMap<String, String> permanentAddress = new HashMap<String, String>();
-        HashMap<String, Object> incomes = new HashMap<String, Object>();
-        HashMap<String, Object> expenses = new HashMap<String, Object>();
+
+        HashMap<String, Object> income = new HashMap<String, Object>();
+        income.put("type", "1");
+        income.put("primary", true);
+        income.put("amount", 120000);
+        income.put("employeeName", "Zonky s.r.o.");
+
+        ArrayList<HashMap<String, Object>> incomes = new ArrayList<HashMap<String, Object>>();
+        incomes.add(income);
 
         permanentAddress.put("street", "Ulice");
         permanentAddress.put("streetNo", "1");
         permanentAddress.put("city", "Praha");
         permanentAddress.put("zipCode", "10000");
-        permanentAddress.put("country", "CZ");cd 
-
+        permanentAddress.put("country", "CZ");
 
         updateApplicationPayload.put("currentStep", 13);
         updateApplicationPayload.put("purpose", "4");
@@ -69,6 +75,7 @@ public class Payloads {
         updateApplicationPayload.put("housingType", "5");
         updateApplicationPayload.put("aboutMyself", "me want money");
         updateApplicationPayload.put("permanentAddress", permanentAddress);
+        updateApplicationPayload.put("incomes", incomes);
 
         updateApplicationPayload.put("totalHouseholdIncome", 100000);
         updateApplicationPayload.put("totalExpenses", 15000);

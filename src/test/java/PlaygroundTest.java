@@ -69,7 +69,7 @@ public class PlaygroundTest extends TestBase {
         // finish application - sign with SMS code
         given(TestBase.requestSpecification)
                 .auth().oauth2(accessToken)
-                .header("X-Authorization-Code", "000123")
+                .header("X-Authorization-Code", TestBase.getSMSverificationCode(testUser))
                 .when()
                 .post(String.format("/mobile/v1/application/%s/finish", Integer.toString(loanId)))
                 .then()
@@ -111,6 +111,30 @@ public class PlaygroundTest extends TestBase {
                 .put(String.format("/mobile/v1/loans/%s/preliminary-offer/accept", loanId))
                 .then()
                 .assertThat().statusCode(200);
+
+
+        // schvaleni v Adminu.. (pozor, test poptavka nejde schvalit)
+
+
+        // sign final offer
+        given(TestBase.requestSpecification)
+                .auth().oauth2(accessToken)
+                .when()
+                .body("{\"preagreementConsent\" : true," +
+                        "\"serviceTermsConsent\" : true }")
+                .put(String.format("/mobile/v1/loans/%s/sign", loanId))
+                .then()
+                .assertThat().statusCode(400).and().body("error", is("AUTHORIZATION_SMS_REQUIRED"));
+
+        given(TestBase.requestSpecification)
+                .auth().oauth2(accessToken)
+                .when()
+                .header("X-Authorization-Code", TestBase.getSMSverificationCode(testUser))
+                .body("{\"preagreementConsent\" : true," +
+                        "\"serviceTermsConsent\" : true }")
+                .put(String.format("/mobile/v1/loans/%s/sign", loanId))
+                .then()
+                .assertThat().statusCode(200).and().body("error", is("AUTHORIZATION_SMS_REQUIRED"));
     }
 
 }
