@@ -26,3 +26,9 @@ eckee:
   origin: 'https://app.ackee.zonkej.cz'
   username: 'mobile.user2000@zonkej.cz'
   password: 'Zebra2014'
+
+cyril:
+  baseUrl: 'http://api.docker1732.zonkej.cz'
+  origin: 'http://app.docker1732.zonkej.cz'
+  username: 'mobile.user2000@zonkej.cz'
+  password: 'Zebra2014'

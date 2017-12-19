@@ -81,7 +81,7 @@ public class PlaygroundTest extends TestBase {
                 given(TestBase.requestSpecification)
                         .auth().oauth2(accessToken)
                         .when()
-                        .post(String.format("/mobile/v1/loans/%s/preliminary-offer", loanId))
+                        .get(String.format("/mobile/v1/loans/%s/preliminary-offer", loanId))
                         .then()
                         .assertThat().statusCode(200).and().extract().path("scored");
 
@@ -92,7 +92,7 @@ public class PlaygroundTest extends TestBase {
             isScored = given(TestBase.requestSpecification)
                     .auth().oauth2(accessToken)
                     .when()
-                    .post(String.format("/mobile/v1/loans/%s/preliminary-offer", loanId))
+                    .get(String.format("/mobile/v1/loans/%s/preliminary-offer", loanId))
                     .then()
                     .assertThat().statusCode(200).and().extract().path("scored");
             maxTry -= 1;
