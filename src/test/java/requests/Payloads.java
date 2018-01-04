@@ -15,8 +15,7 @@ public class Payloads {
         int randomNumber = r.nextInt(high-low) + low;
 
         HashMap<String, String> createUserPayload = new HashMap<String, String>();
-//        createUserPayload.put("email", String.format("milan.vojnovic+test%s@zonky.cz", randomNumber));
-        createUserPayload.put("email", String.format("milan.vojnovic@zonky.cz", randomNumber));
+        createUserPayload.put("email", String.format("withrating5A+%s@zonky.cz", randomNumber));
         createUserPayload.put("firstName", "Milan");
         createUserPayload.put("lastName", "Vojnovič");
         createUserPayload.put("password", "Zebra2014");
@@ -66,7 +65,7 @@ public class Payloads {
         updateApplicationPayload.put("applicationVersion", "5");
         updateApplicationPayload.put("personalInfoConsent", true);
         updateApplicationPayload.put("businessTermsConsent", true);
-        updateApplicationPayload.put("personalNo", "1111111111");
+        updateApplicationPayload.put("personalNo", "8912247938");
         updateApplicationPayload.put("phone", "+420777888999");
         updateApplicationPayload.put("politicallyExposed", true);
         updateApplicationPayload.put("maritalStatus", "1");
